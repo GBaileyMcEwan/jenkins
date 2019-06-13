@@ -7,7 +7,7 @@ pipeline {
 				archiveArtifacts artifacts: 'src/index.html'
 			}
 		}
-		stage('Deploy') {
+		stage('DeployToStaging') {
 			when {
 				branch 'master'
 			}
@@ -18,7 +18,36 @@ pipeline {
 						continueOnError: false,
 						publishers: [
 							sshPublisherDesc(
-								configName: 'UbuntuBox',
+								configName: 'StagingServer',
+								sshCredentials: [
+									username: "$USERNAME",
+									encryptedPassphrase: "$USERPASS"
+								],
+								transfers: [
+									sshTransfer(
+										sourceFiles: 'src/index.html',
+										removePrefix: 'src/',
+										remoteDirectory: '/'
+									)
+								]
+							)
+						]
+					)
+				}
+			}
+		}
+		stage('DeployToProd') {
+			when {
+				branch 'master'
+			}
+			steps {
+				withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+					sshPublisher(
+						failOnError: true,
+						continueOnError: false,
+						publishers: [
+							sshPublisherDesc(
+								configName: 'ProductionServer',
 								sshCredentials: [
 									username: "$USERNAME",
 									encryptedPassphrase: "$USERPASS"
