@@ -44,6 +44,7 @@
         name: DevOpsVS
         pool: DevOpsPool
         port: '443'
+        snat: None
         all_profiles:
           - http
           - f5demo_client_ssl
