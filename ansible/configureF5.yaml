@@ -36,21 +36,21 @@
           server: "{{ f5 }}"
           validate_certs: "{{ validate_certs }}"
           transport: rest
-          
-     - name: CreateVS
-       bigip_virtual_server:
-         description: DevOpsVIP
-         destination: 10.1.10.105
-         name: DevOpsVS
-         pool: DevOpsPool
-         port: 443
-         snat: Automap
-         all_profiles:
-           - http
-           - f5demo_client_ssl
-         provider:
-           user: "{{ username }}"
-           password: "{{ password }}"
-           server: "{{ f5 }}"
-           validate_certs: "{{ validate_certs }}"
-           transport: rest
+
+    - name: CreateVS
+      bigip_virtual_server:
+        description: DevOpsVIP
+        destination: 10.1.10.105
+        name: DevOpsVS
+        pool: DevOpsPool
+        port: 443
+        snat: Automap
+        all_profiles:
+          - http
+          - f5demo_client_ssl
+        provider:
+          user: "{{ username }}"
+          password: "{{ password }}"
+          server: "{{ f5 }}"
+          validate_certs: "{{ validate_certs }}"
+          transport: rest
