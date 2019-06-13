@@ -67,5 +67,34 @@ pipeline {
 				}
 			}
 		}
+		stage('GrabAnsiblePlaybookFromGitHub') {
+			when {
+				branch 'master'
+			}
+			steps {
+				withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+					sshPublisher(
+						failOnError: true,
+						continueOnError: false,
+						publishers: [
+							sshPublisherDesc(
+								configName: 'AnsibleServer',
+								sshCredentials: [
+									username: "$USERNAME",
+									encryptedPassphrase: "$USERPASS"
+								],
+								transfers: [
+									sshTransfer(
+										sourceFiles: 'ansible/configureF5.yaml',
+										removePrefix: 'ansible/',
+										remoteDirectory: '/'
+									)
+								]
+							)
+						]
+					)
+				}
+			}
+		}
 	}
 }
