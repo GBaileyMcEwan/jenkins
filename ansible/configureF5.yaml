@@ -43,7 +43,7 @@
         destination: 10.1.10.105
         name: DevOpsVS
         pool: DevOpsPool
-        port: 443
+        port: '443'
         snat: Automap
         all_profiles:
           - http
