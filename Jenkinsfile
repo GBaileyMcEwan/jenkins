@@ -27,7 +27,7 @@ pipeline {
 									sshTransfer(
 										sourceFiles: 'src/index.html',
 										removePrefix: 'src/',
-										remoteDirectory: '/var/www/html/jenkins'
+										remoteDirectory: '/'
 									)
 								]
 							)
