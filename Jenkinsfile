@@ -4,7 +4,7 @@ pipeline {
 		stage('Deploy') {
 			steps {
 				echo 'Running deployment'
-				archiveArtifacts artifacts: src/index.html'
+				archiveArtifacts artifacts: 'src/index.html'
 			}
 		}
 	}
