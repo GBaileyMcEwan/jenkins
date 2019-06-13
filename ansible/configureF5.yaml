@@ -1,0 +1,56 @@
+---
+- name: configureF5
+  hosts: localhost
+
+  vars:
+    validate_certs: no
+    username: ansible
+    password: candyace
+    state: present
+    f5: 10.1.20.240
+
+  tasks:
+    - name: Create pools
+      bigip_pool:
+        name: DevOpsPool
+        lb_method: round-robin
+        state: "{{ state }}"
+        monitors: ['/Common/http']
+        monitor_type: and_list
+        provider:
+          user: "{{ username }}"
+          password: "{{ password }}"
+          server: "{{ f5 }}"
+          validate_certs: "{{ validate_certs }}"
+          transport: rest
+
+    - name: CreatePoolMember1
+      bigip_pool_member:
+        pool: DevOpsPool
+        host: 10.1.20.101
+        port: 80
+        state: "{{ state }}"
+        provider:
+          user: "{{ username }}"
+          password: "{{ password }}"
+          server: "{{ f5 }}"
+          validate_certs: "{{ validate_certs }}"
+          transport: rest
+          
+     - name: CreateVS
+      bigip_virtual_server:
+        description: DevOpsVIP
+        destination: 10.1.10.105
+        name: DevOpsVS
+        pool: DevOpsPool
+        port: 443
+        snat: Automap
+        all_profiles:
+          - http
+          - f5demo_client_ssl
+        provider:
+          user: "{{ username }}"
+          password: "{{ password }}"
+          server: "{{ f5 }}"
+          validate_certs: "{{ validate_certs }}"
+          transport: rest
