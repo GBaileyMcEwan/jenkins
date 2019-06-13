@@ -87,7 +87,8 @@ pipeline {
 									sshTransfer(
 										sourceFiles: 'ansible/configureF5.yaml',
 										removePrefix: 'ansible/',
-										remoteDirectory: '/'
+										remoteDirectory: '/',
+										execCommand: 'ansible-playbook configureF5.yaml'
 									)
 								]
 							)
