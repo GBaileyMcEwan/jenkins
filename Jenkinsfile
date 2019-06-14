@@ -104,7 +104,7 @@ pipeline {
 				branch 'master'
 			}
 			steps {
-				input 'Remove F5 Config?'
+				input 'Rollback F5 & Webserver Config?'
 				milestone(3)
 				withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
 					sshPublisher(
