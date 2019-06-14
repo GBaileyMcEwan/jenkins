@@ -25,7 +25,7 @@ pipeline {
 								],
 								transfers: [
 									sshTransfer(
-										sourceFiles: 'src/index.html',
+										sourceFiles: 'src/index.html && src/grabInput.php',
 										removePrefix: 'src/',
 										remoteDirectory: '/'
 									)
