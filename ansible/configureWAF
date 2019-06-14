@@ -1,0 +1,33 @@
+---
+- name: configureF5
+  hosts: localhost
+
+  vars:
+    validate_certs: no
+    username: ansible
+    password: candyace
+    state: present
+    f5: 10.1.20.240
+
+  tasks:
+    - name: CreateVS
+      bigip_virtual_server:
+        description: DevOpsVIP
+        destination: 10.1.10.105
+        name: DevOpsVS
+        pool: DevOpsPool
+        port: '443'
+        snat: None
+        all_profiles:
+          - http
+          - f5demo_client_ssl
+          - websecurity
+        all_policies:
+          - asm_auto_l7_policy__HackazonVS_HTTP
+        security_log_profiles: "Log all requests"
+        provider:
+          user: "{{ username }}"
+          password: "{{ password }}"
+          server: "{{ f5 }}"
+          validate_certs: "{{ validate_certs }}"
+          transport: rest
