@@ -23,7 +23,7 @@
           - f5demo_client_ssl
           - websecurity
         all_policies:
-          - asm_auto_l7_policy__HackazonVS_HTTP
+          - DevOpsWAF
         security_log_profiles: "Log all requests"
         provider:
           user: "{{ username }}"
