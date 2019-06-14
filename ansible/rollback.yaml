@@ -1,0 +1,48 @@
+---
+- name: configureF5
+  hosts: localhost
+
+  vars:
+    validate_certs: no
+    username: ansible
+    password: candyace
+    state: absent
+    f5: 10.1.20.240
+ 
+  tasks:
+    - name: DeleteVS
+      bigip_virtual_server:
+        name: DevOpsVS
+        state: "{{ state }}"
+        provider:
+          user: "{{ username }}"
+          password: "{{ password }}"
+          server: "{{ f5 }}"
+          validate_certs: "{{ validate_certs }}"
+          transport: rest
+
+
+    - name: DeletePoolMember
+      bigip_pool_member:
+        pool: DevOpsPool
+        port: 80
+        host: 10.1.20.102
+        preserve_node: yes
+        state: "{{ state }}"
+        provider:
+          user: "{{ username }}"
+          password: "{{ password }}"
+          server: "{{ f5 }}"
+          validate_certs: "{{ validate_certs }}"
+          transport: rest
+
+    - name: Delete pool
+      bigip_pool:
+        name: DevOpsPool
+        state: "{{ state }}"
+        provider:
+          user: "{{ username }}"
+          password: "{{ password }}"
+          server: "{{ f5 }}"
+          validate_certs: "{{ validate_certs }}"
+          transport: rest
