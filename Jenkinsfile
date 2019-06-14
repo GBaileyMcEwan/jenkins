@@ -122,9 +122,7 @@ pipeline {
 										sourceFiles: 'ansible/rollbackF5.yaml',
 										removePrefix: 'ansible/',
 										remoteDirectory: '/',
-										execCommand: 'ansible-playbook rollbackF5.yaml'
-										execCommand: 'rm configureF5.yaml rollbackF5.yaml'
-										execCommand: 'rm /var/www/html/jenkins/index.html /var/www/html/jenkins-staging/index.html'
+										execCommand: 'ansible-playbook rollbackF5.yaml && rm configureF5.yaml rollbackF5.yaml && rm /var/www/html/jenkins/index.html /var/www/html/jenkins-staging/index.html'
 									)
 								]
 							)
