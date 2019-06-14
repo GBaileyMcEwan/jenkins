@@ -154,7 +154,7 @@ pipeline {
 										sourceFiles: 'ansible/rollbackF5.yaml',
 										removePrefix: 'ansible/',
 										remoteDirectory: '/',
-										execCommand: 'ansible-playbook rollbackF5.yaml && rm configureF5.yaml rollbackF5.yaml configureWAF.yaml && rm /var/www/html/jenkins/index.html /var/www/html/jenkins-staging/index.html /var/www/html/jenkins/grabInput.php /var/www/html/jenkins-staging/grabInput.php && cp /var/www/html/index.nginx-debian.html /var/www/html/jenkins/index.html && cp /var/www/html/index.nginx-debian.html /var/www/html/jenkins-staging/index.html'
+										execCommand: 'ansible-playbook rollbackF5.yaml && rm configureF5.yaml rollbackF5.yaml configureWAF.yaml && rm /var/www/html/jenkins/index.html /var/www/html/jenkins-staging/index.html /var/www/html/jenkins/grabInput.php /var/www/html/jenkins-staging/grabInput.php && cp /var/www/html/index.nginx-debian.html /var/www/html/jenkins/index.html && cp /var/www/html/index.nginx-debian-staging.html /var/www/html/jenkins-staging/index.html'
 									)
 								]
 							)
