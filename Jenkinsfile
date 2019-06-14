@@ -99,5 +99,37 @@ pipeline {
 				}
 			}
 		}
+		stage('RollbackF5Config') {
+			when {
+				branch 'master'
+			}
+			steps {
+				input 'Remove F5 Config?'
+				milestone(3)
+				withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+					sshPublisher(
+						failOnError: true,
+						continueOnError: false,
+						publishers: [
+							sshPublisherDesc(
+								configName: 'AnsibleServer',
+								sshCredentials: [
+									username: "$USERNAME",
+									encryptedPassphrase: "$USERPASS"
+								],
+								transfers: [
+									sshTransfer(
+										sourceFiles: 'ansible/rollbackF5.yaml',
+										removePrefix: 'ansible/',
+										remoteDirectory: '/',
+										execCommand: 'ansible-playbook rollbackF5.yaml'
+									)
+								]
+							)
+						]
+					)
+				}
+			}
+		}
 	}
 }
