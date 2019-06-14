@@ -7,7 +7,7 @@ echo '<html>';
 echo '<head>';
 echo '<title>F5 DevOps Day!</title>';
 echo '</head>';
-echo '<body style="background-color: #42F4EB;">';
+echo '<body style="background-color: #d3dcea;">';
 echo '<h1 style="font-family: Courier; color: #434347; font-size: 46px; text-align: center;">';
 echo 'Your input was: ' . $myInput . '';
 echo '</h1>';
