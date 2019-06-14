@@ -99,7 +99,7 @@ pipeline {
 				}
 			}
 		}
-		stage('RollbackF5Config') {
+		stage('RollbackConfig') {
 			when {
 				branch 'master'
 			}
