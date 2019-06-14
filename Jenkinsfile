@@ -67,7 +67,7 @@ pipeline {
 				}
 			}
 		}
-		stage('GrabAnsiblePlaybookFromGitHub') {
+		stage('BasicF5ConfigThroughAnsible') {
 			when {
 				branch 'master'
 			}
@@ -99,13 +99,45 @@ pipeline {
 				}
 			}
 		}
+		stage('F5WAFConfigThroughAnsible') {
+			when {
+				branch 'master'
+			}
+			steps {
+				input 'Deploy WAF??'
+				milestone(3)
+				withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+					sshPublisher(
+						failOnError: true,
+						continueOnError: false,
+						publishers: [
+							sshPublisherDesc(
+								configName: 'AnsibleServer',
+								sshCredentials: [
+									username: "$USERNAME",
+									encryptedPassphrase: "$USERPASS"
+								],
+								transfers: [
+									sshTransfer(
+										sourceFiles: 'ansible/configureWAF.yaml',
+										removePrefix: 'ansible/',
+										remoteDirectory: '/',
+										execCommand: 'ansible-playbook configureWAF.yaml'
+									)
+								]
+							)
+						]
+					)
+				}
+			}
+		}
 		stage('RollbackConfig') {
 			when {
 				branch 'master'
 			}
 			steps {
 				input 'Rollback F5 & Webserver Config?'
-				milestone(3)
+				milestone(4)
 				withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
 					sshPublisher(
 						failOnError: true,
@@ -122,7 +154,7 @@ pipeline {
 										sourceFiles: 'ansible/rollbackF5.yaml',
 										removePrefix: 'ansible/',
 										remoteDirectory: '/',
-										execCommand: 'ansible-playbook rollbackF5.yaml && rm configureF5.yaml rollbackF5.yaml && rm /var/www/html/jenkins/index.html /var/www/html/jenkins-staging/index.html'
+										execCommand: 'ansible-playbook rollbackF5.yaml && rm configureF5.yaml rollbackF5.yaml configureWAF.yaml && rm /var/www/html/jenkins/index.html /var/www/html/jenkins-staging/index.html'
 									)
 								]
 							)
